@@ -44,7 +44,8 @@ pipeline {
                       script{
                           sh 'aws eks update-kubeconfig --name app-eks-cluster --region us-east-2'
                           sh """aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"""
-                          sh 'helm upgrade --install --namespace config --set image.repository="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}" --set image.tag="${VERSION}" october-app ./web-app -f ./web-app/values.yaml'
+                          //sh 'helm upgrade --install --namespace config --set image.repository="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}" --set image.tag="${VERSION}" october-app ./web-app -f ./web-app/values.yaml'
+                          sh 'helm uninstall october-app -n config'
 
 
 
