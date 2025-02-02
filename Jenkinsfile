@@ -9,6 +9,7 @@ pipeline {
         IMAGE_TAG= "${env.BUILD_ID}"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
+
     }
     stages {
           stage('Building docker image') {
@@ -41,9 +42,9 @@ pipeline {
                  }
                     steps {
                       script{
-                          sh 'aws eks update-kubeconfig --name myapp-eks-cluster --region us-east-2'
+                          sh 'aws eks update-kubeconfig --name app-eks-cluster --region us-east-2'
                           sh """aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"""
-                          sh 'helm upgrade --install --namespace october --set image.repository="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}" --set image.tag="${VERSION}" october-app ./october -f ./october/values.yaml'
+                          sh 'helm upgrade --install --namespace config --set image.repository="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}" --set image.tag="${VERSION}" october-app ./web-app -f ./web-app/values.yaml'
 
 
 
